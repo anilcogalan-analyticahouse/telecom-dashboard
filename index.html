@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telekom Veri Entegrasyonu Dashboard</title>
+    <title>Telecom Data Integration Dashboard</title>
     <style>
         * { 
             margin: 0; 
@@ -154,7 +154,7 @@
             font-size: 24px;
         }
         
-        /* Veri Kalitesi Grafiği */
+        /* Data Quality Chart */
         .data-quality-chart {
             display: flex;
             justify-content: space-around;
@@ -181,7 +181,7 @@
         
         .quality-bar:nth-child(2) {
             background: linear-gradient(to top, #2ecc71, #58d68d);
-            height: 75%;
+            height: 85%;
         }
         
         .quality-bar:nth-child(3) {
@@ -191,7 +191,7 @@
         
         .quality-bar:nth-child(4) {
             background: linear-gradient(to top, #9b59b6, #bb8fce);
-            height: 70%;
+            height: 80%;
         }
         
         .quality-label {
@@ -220,7 +220,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         
-        /* Teknoloji Dağılımı */
+        /* Technology Distribution */
         .tech-distribution {
             display: flex;
             flex-direction: column;
@@ -263,6 +263,7 @@
             font-weight: 700;
             color: #2c3e50;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 12px;
         }
         
         .pie-legend {
@@ -289,7 +290,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
         
-        /* Trend Grafiği */
+        /* Trend Chart */
         .trend-container {
             background: white;
             border-radius: 15px;
@@ -341,7 +342,7 @@
             color: #7f8c8d;
         }
         
-        /* Özet Kartları */
+        /* Summary Cards */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -394,7 +395,7 @@
             line-height: 1.4;
         }
         
-        /* Animasyonlar */
+        /* Animations */
         @keyframes growUp {
             from { 
                 height: 0 !important; 
@@ -435,88 +436,88 @@
     <div class="dashboard">
         <!-- Header -->
         <div class="header">
-            <h1>🔗 Birinci Taraf Veri Entegrasyonu</h1>
-            <p>Müşteri verilerinin birleşik görünümü ve gerçek zamanlı analitik dashboard</p>
+            <h1>🔗 First-Party Data Integration</h1>
+            <p>Unified customer data visualization and real-time analytics dashboard</p>
         </div>
         
         <!-- KPI Cards -->
         <div class="kpi-grid">
             <div class="kpi-card blue">
                 <div class="kpi-icon">👥</div>
-                <div class="kpi-label">Toplam Müşteri</div>
-                <div class="kpi-value">208,000</div>
-                <div class="kpi-change">↗ %12 bu ay</div>
+                <div class="kpi-label">Total Customers</div>
+                <div class="kpi-value">~200K</div>
+                <div class="kpi-change">↗ Growing trend</div>
             </div>
             <div class="kpi-card green">
                 <div class="kpi-icon">✅</div>
-                <div class="kpi-label">Veri Kalitesi</div>
-                <div class="kpi-value">%96</div>
-                <div class="kpi-change">↗ %8 iyileşme</div>
+                <div class="kpi-label">Data Quality</div>
+                <div class="kpi-value">High</div>
+                <div class="kpi-change">↗ Improving</div>
             </div>
             <div class="kpi-card orange">
                 <div class="kpi-icon">📈</div>
-                <div class="kpi-label">Aylık Büyüme</div>
-                <div class="kpi-value">%15</div>
-                <div class="kpi-change">↗ %3 artış</div>
+                <div class="kpi-label">Growth Rate</div>
+                <div class="kpi-value">Strong</div>
+                <div class="kpi-change">↗ Positive trend</div>
             </div>
             <div class="kpi-card purple">
                 <div class="kpi-icon">💰</div>
-                <div class="kpi-label">Toplam Gelir</div>
-                <div class="kpi-value">₺31.2M</div>
-                <div class="kpi-change">↗ %18 artış</div>
+                <div class="kpi-label">Revenue Impact</div>
+                <div class="kpi-value">$4M+</div>
+                <div class="kpi-change">↗ Increasing</div>
             </div>
         </div>
         
         <!-- Charts -->
         <div class="chart-grid">
-            <!-- Veri Kalitesi -->
+            <!-- Data Quality -->
             <div class="chart-card">
-                <div class="chart-title">Veri Kalitesi Metrikleri</div>
+                <div class="chart-title">Data Quality Metrics</div>
                 <div class="data-quality-chart">
                     <div class="quality-bar">
-                        <div class="quality-percentage">95%</div>
-                        <div class="quality-label">Demografik<br>Veriler</div>
+                        <div class="quality-percentage">High</div>
+                        <div class="quality-label">Demographics<br>Data</div>
                     </div>
                     <div class="quality-bar">
-                        <div class="quality-percentage">88%</div>
-                        <div class="quality-label">Sözleşme<br>Bilgileri</div>
+                        <div class="quality-percentage">Good</div>
+                        <div class="quality-label">Contract<br>Information</div>
                     </div>
                     <div class="quality-bar">
-                        <div class="quality-percentage">99%</div>
-                        <div class="quality-label">Faturalama<br>Verileri</div>
+                        <div class="quality-percentage">Excellent</div>
+                        <div class="quality-label">Billing<br>Data</div>
                     </div>
                     <div class="quality-bar">
-                        <div class="quality-percentage">85%</div>
-                        <div class="quality-label">Lokasyon<br>Bilgileri</div>
+                        <div class="quality-percentage">Good</div>
+                        <div class="quality-label">Location<br>Information</div>
                     </div>
                 </div>
             </div>
             
-            <!-- Teknoloji Dağılımı -->
+            <!-- Technology Distribution -->
             <div class="chart-card">
-                <div class="chart-title">Altyapı Teknolojisi Dağılımı</div>
+                <div class="chart-title">Infrastructure Technology Distribution</div>
                 <div class="tech-distribution">
                     <div class="pie-container">
                         <div class="pie-slice">
-                            <div class="pie-center">208K</div>
+                            <div class="pie-center">Mixed<br>Portfolio</div>
                         </div>
                     </div>
                     <div class="pie-legend">
                         <div class="legend-item">
                             <div class="legend-color" style="background: #3498db;"></div>
-                            Fiber (45%)
+                            Fiber (Majority)
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #2ecc71;"></div>
-                            VDSL (30%)
+                            VDSL (Significant)
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #f39c12;"></div>
-                            ADSL (20%)
+                            ADSL (Legacy)
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #9b59b6;"></div>
-                            GigaFiber (5%)
+                            GigaFiber (Premium)
                         </div>
                     </div>
                 </div>
@@ -525,7 +526,7 @@
         
         <!-- Trend Chart -->
         <div class="trend-container">
-            <div class="chart-title">6 Aylık Entegrasyon Büyüme Trendi</div>
+            <div class="chart-title">6-Month Integration Growth Trend</div>
             <div class="trend-chart">
                 <div class="trend-bar"></div>
                 <div class="trend-bar"></div>
@@ -535,31 +536,31 @@
                 <div class="trend-bar"></div>
             </div>
             <div class="trend-labels">
-                <span>Ocak</span>
-                <span>Şubat</span>
-                <span>Mart</span>
-                <span>Nisan</span>
-                <span>Mayıs</span>
-                <span>Haziran</span>
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
             </div>
         </div>
         
         <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
-                <h3>🔄 Veri Entegrasyonu</h3>
-                <div class="summary-value">98.5%</div>
-                <p>15+ farklı kaynaktan başarıyla entegre edilmiş veriler</p>
+                <h3>🔄 Data Integration</h3>
+                <div class="summary-value">Excellent</div>
+                <p>Successfully integrated data from multiple sources</p>
             </div>
             <div class="summary-card">
-                <h3>⚡ Sistem Performansı</h3>
-                <div class="summary-value">&lt; 5sn</div>
-                <p>Gerçek zamanlı veri işleme ve senkronizasyon</p>
+                <h3>⚡ System Performance</h3>
+                <div class="summary-value">Fast</div>
+                <p>Real-time data processing and synchronization</p>
             </div>
             <div class="summary-card">
-                <h3>💎 Yatırım Getirisi</h3>
-                <div class="summary-value">%340</div>
-                <p>Operasyonel verimlilik ve maliyet tasarrufu</p>
+                <h3>💎 Business Value</h3>
+                <div class="summary-value">High</div>
+                <p>Significant operational efficiency improvements</p>
             </div>
         </div>
     </div>
