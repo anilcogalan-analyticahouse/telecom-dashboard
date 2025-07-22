@@ -1,217 +1,567 @@
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Users, Database, TrendingUp, Wifi, MapPin, CreditCard } from 'lucide-react';
-
-const Dashboard = () => {
-  // Data quality metrics
-  const dataQualityMetrics = [
-    { category: 'Customer Demographics', completeness: 95, accuracy: 92 },
-    { category: 'Contract Information', completeness: 88, accuracy: 96 },
-    { category: 'Billing Data', completeness: 99, accuracy: 98 },
-    { category: 'Location Data', completeness: 85, accuracy: 89 }
-  ];
-
-  // Technology distribution
-  const technologyDistribution = [
-    { name: 'Fiber', value: 45, color: '#3B82F6' },
-    { name: 'VDSL', value: 30, color: '#10B981' },
-    { name: 'ADSL', value: 20, color: '#F59E0B' },
-    { name: 'GigaFiber', value: 5, color: '#8B5CF6' }
-  ];
-
-  // Monthly integration trend
-  const integrationTrend = [
-    { month: 'Jan', records: 120000, quality: 85 },
-    { month: 'Feb', records: 135000, quality: 88 },
-    { month: 'Mar', records: 150000, quality: 91 },
-    { month: 'Apr', records: 168000, quality: 93 },
-    { month: 'May', records: 185000, quality: 95 },
-    { month: 'Jun', records: 202000, quality: 96 }
-  ];
-
-  // City-based customer distribution
-  const cityDistribution = [
-    { city: 'Istanbul', customers: 85000, revenue: 12500000 },
-    { city: 'Ankara', customers: 45000, revenue: 6800000 },
-    { city: 'Izmir', customers: 38000, revenue: 5700000 },
-    { city: 'Bursa', customers: 22000, revenue: 3300000 },
-    { city: 'Antalya', customers: 18000, revenue: 2900000 }
-  ];
-
-  const StatCard = ({ icon: Icon, title, value, change, color }) => (
-    <div className="bg-white rounded-lg shadow-lg p-6 border-l-4" style={{borderLeftColor: color}}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-          <p className={`text-xs ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {change >= 0 ? '↗' : '↘'} {Math.abs(change)}% this month
-          </p>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telekom Veri Entegrasyonu Dashboard</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .header h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: clamp(14px, 2vw, 18px);
+            color: #7f8c8d;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .kpi-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 0 15px 0 50px;
+        }
+        
+        .kpi-card:hover { 
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .kpi-card.blue { border-left-color: #3498db; }
+        .kpi-card.green { border-left-color: #2ecc71; }
+        .kpi-card.orange { border-left-color: #f39c12; }
+        .kpi-card.purple { border-left-color: #9b59b6; }
+        
+        .kpi-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        
+        .kpi-value {
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 15px 0;
+            letter-spacing: -1px;
+        }
+        
+        .kpi-label {
+            color: #7f8c8d;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .kpi-change {
+            color: #27ae60;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            min-height: 400px;
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .chart-title::before {
+            content: "📊";
+            margin-right: 12px;
+            font-size: 24px;
+        }
+        
+        /* Veri Kalitesi Grafiği */
+        .data-quality-chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: end;
+            height: 280px;
+            padding: 20px 10px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .quality-bar {
+            width: 70px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            animation: growUp 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .quality-bar:nth-child(1) {
+            background: linear-gradient(to top, #3498db, #5dade2);
+            height: 90%;
+        }
+        
+        .quality-bar:nth-child(2) {
+            background: linear-gradient(to top, #2ecc71, #58d68d);
+            height: 75%;
+        }
+        
+        .quality-bar:nth-child(3) {
+            background: linear-gradient(to top, #f39c12, #f7c52d);
+            height: 95%;
+        }
+        
+        .quality-bar:nth-child(4) {
+            background: linear-gradient(to top, #9b59b6, #bb8fce);
+            height: 70%;
+        }
+        
+        .quality-label {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #34495e;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .quality-percentage {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.95);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* Teknoloji Dağılımı */
+        .tech-distribution {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 300px;
+        }
+        
+        .pie-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .pie-slice {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3498db 0% 45%,
+                #2ecc71 45% 75%,
+                #f39c12 75% 95%,
+                #9b59b6 95% 100%
+            );
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: spin360 3s ease-in-out;
+        }
+        
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .pie-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            margin-right: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        
+        /* Trend Grafiği */
+        .trend-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .trend-chart {
+            height: 280px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            display: flex;
+            align-items: end;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trend-bar {
+            flex: 1;
+            margin: 0 4px;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(to top, #3498db, #5dade2);
+            position: relative;
+            animation: growUp 2s ease-out;
+            box-shadow: 0 -5px 15px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .trend-bar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 -8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .trend-bar:nth-child(1) { height: 50%; animation-delay: 0.1s; }
+        .trend-bar:nth-child(2) { height: 65%; animation-delay: 0.2s; }
+        .trend-bar:nth-child(3) { height: 75%; animation-delay: 0.3s; }
+        .trend-bar:nth-child(4) { height: 85%; animation-delay: 0.4s; }
+        .trend-bar:nth-child(5) { height: 95%; animation-delay: 0.5s; }
+        .trend-bar:nth-child(6) { height: 100%; animation-delay: 0.6s; }
+        
+        .trend-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+        
+        /* Özet Kartları */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: shimmer 3s infinite;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .summary-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .summary-value {
+            font-size: 42px;
+            font-weight: 700;
+            margin: 20px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .summary-card p {
+            font-size: 15px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        /* Animasyonlar */
+        @keyframes growUp {
+            from { 
+                height: 0 !important; 
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes spin360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard { padding: 20px; }
+            .chart-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .summary-cards { grid-template-columns: 1fr; }
+            .pie-legend { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard { padding: 15px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .chart-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔗 Birinci Taraf Veri Entegrasyonu</h1>
+            <p>Müşteri verilerinin birleşik görünümü ve gerçek zamanlı analitik dashboard</p>
         </div>
-        <Icon className="h-8 w-8" style={{color}} />
-      </div>
+        
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card blue">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-label">Toplam Müşteri</div>
+                <div class="kpi-value">208,000</div>
+                <div class="kpi-change">↗ %12 bu ay</div>
+            </div>
+            <div class="kpi-card green">
+                <div class="kpi-icon">✅</div>
+                <div class="kpi-label">Veri Kalitesi</div>
+                <div class="kpi-value">%96</div>
+                <div class="kpi-change">↗ %8 iyileşme</div>
+            </div>
+            <div class="kpi-card orange">
+                <div class="kpi-icon">📈</div>
+                <div class="kpi-label">Aylık Büyüme</div>
+                <div class="kpi-value">%15</div>
+                <div class="kpi-change">↗ %3 artış</div>
+            </div>
+            <div class="kpi-card purple">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-label">Toplam Gelir</div>
+                <div class="kpi-value">₺31.2M</div>
+                <div class="kpi-change">↗ %18 artış</div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="chart-grid">
+            <!-- Veri Kalitesi -->
+            <div class="chart-card">
+                <div class="chart-title">Veri Kalitesi Metrikleri</div>
+                <div class="data-quality-chart">
+                    <div class="quality-bar">
+                        <div class="quality-percentage">95%</div>
+                        <div class="quality-label">Demografik<br>Veriler</div>
+                    </div>
+                    <div class="quality-bar">
+                        <div class="quality-percentage">88%</div>
+                        <div class="quality-label">Sözleşme<br>Bilgileri</div>
+                    </div>
+                    <div class="quality-bar">
+                        <div class="quality-percentage">99%</div>
+                        <div class="quality-label">Faturalama<br>Verileri</div>
+                    </div>
+                    <div class="quality-bar">
+                        <div class="quality-percentage">85%</div>
+                        <div class="quality-label">Lokasyon<br>Bilgileri</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teknoloji Dağılımı -->
+            <div class="chart-card">
+                <div class="chart-title">Altyapı Teknolojisi Dağılımı</div>
+                <div class="tech-distribution">
+                    <div class="pie-container">
+                        <div class="pie-slice">
+                            <div class="pie-center">208K</div>
+                        </div>
+                    </div>
+                    <div class="pie-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3498db;"></div>
+                            Fiber (45%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2ecc71;"></div>
+                            VDSL (30%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f39c12;"></div>
+                            ADSL (20%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #9b59b6;"></div>
+                            GigaFiber (5%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Trend Chart -->
+        <div class="trend-container">
+            <div class="chart-title">6 Aylık Entegrasyon Büyüme Trendi</div>
+            <div class="trend-chart">
+                <div class="trend-bar"></div>
+                <div class="trend-bar"></div>
+                <div class="trend-bar"></div>
+                <div class="trend-bar"></div>
+                <div class="trend-bar"></div>
+                <div class="trend-bar"></div>
+            </div>
+            <div class="trend-labels">
+                <span>Ocak</span>
+                <span>Şubat</span>
+                <span>Mart</span>
+                <span>Nisan</span>
+                <span>Mayıs</span>
+                <span>Haziran</span>
+            </div>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>🔄 Veri Entegrasyonu</h3>
+                <div class="summary-value">98.5%</div>
+                <p>15+ farklı kaynaktan başarıyla entegre edilmiş veriler</p>
+            </div>
+            <div class="summary-card">
+                <h3>⚡ Sistem Performansı</h3>
+                <div class="summary-value">&lt; 5sn</div>
+                <p>Gerçek zamanlı veri işleme ve senkronizasyon</p>
+            </div>
+            <div class="summary-card">
+                <h3>💎 Yatırım Getirisi</h3>
+                <div class="summary-value">%340</div>
+                <p>Operasyonel verimlilik ve maliyet tasarrufu</p>
+            </div>
+        </div>
     </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">First-Party Data Integration</h1>
-          <p className="text-gray-600">Unified customer data view and analytics dashboard</p>
-        </div>
-
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            icon={Users}
-            title="Total Customers"
-            value="208,000"
-            change={12}
-            color="#3B82F6"
-          />
-          <StatCard
-            icon={Database}
-            title="Data Quality"
-            value="96%"
-            change={8}
-            color="#10B981"
-          />
-          <StatCard
-            icon={TrendingUp}
-            title="Monthly Growth"
-            value="15%"
-            change={3}
-            color="#F59E0B"
-          />
-          <StatCard
-            icon={CreditCard}
-            title="Total Revenue"
-            value="$4.2M"
-            change={18}
-            color="#8B5CF6"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Data Quality Metrics */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Database className="mr-2 text-blue-600" />
-              Data Quality Metrics
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={dataQualityMetrics}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="category" tick={{fontSize: 12}} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="completeness" fill="#3B82F6" name="Completeness %" />
-                <Bar dataKey="accuracy" fill="#10B981" name="Accuracy %" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Technology Distribution */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Wifi className="mr-2 text-green-600" />
-              Infrastructure Technology Distribution
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={technologyDistribution}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  dataKey="value"
-                  label={({name, value}) => `${name}: ${value}%`}
-                >
-                  {technologyDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Integration Trend */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <TrendingUp className="mr-2 text-purple-600" />
-            Monthly Data Integration Trend
-          </h3>
-          <ResponsiveContainer width="100%" height={350}>
-            <LineChart data={integrationTrend}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
-              <Tooltip 
-                formatter={(value, name) => [
-                  name === 'records' ? `${(value/1000).toFixed(0)}K` : `${value}%`,
-                  name === 'records' ? 'Total Records' : 'Data Quality'
-                ]}
-              />
-              <Legend />
-              <Bar yAxisId="left" dataKey="records" fill="#8884d8" name="Total Records" />
-              <Line yAxisId="right" type="monotone" dataKey="quality" stroke="#82ca9d" strokeWidth={3} name="Data Quality %" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* City-based Analysis */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <MapPin className="mr-2 text-red-600" />
-            Customer & Revenue Distribution by City
-          </h3>
-          <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={cityDistribution}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="city" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
-              <Tooltip 
-                formatter={(value, name) => [
-                  name === 'customers' ? `${(value/1000).toFixed(0)}K` : `$${(value/1000000).toFixed(1)}M`,
-                  name === 'customers' ? 'Customers' : 'Revenue'
-                ]}
-              />
-              <Legend />
-              <Bar yAxisId="left" dataKey="customers" fill="#FF6B6B" name="Customer Count" />
-              <Bar yAxisId="right" dataKey="revenue" fill="#4ECDC4" name="Monthly Revenue ($)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Summary Information */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
-            <h4 className="text-lg font-semibold mb-2">Data Integration</h4>
-            <p className="text-sm opacity-90">Successful integration from 15+ different data sources</p>
-            <p className="text-2xl font-bold mt-2">98.5% uptime</p>
-          </div>
-          
-          <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
-            <h4 className="text-lg font-semibold mb-2">Performance</h4>
-            <p className="text-sm opacity-90">Real-time data processing and synchronization</p>
-            <p className="text-2xl font-bold mt-2">&lt; 5 sec</p>
-          </div>
-          
-          <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
-            <h4 className="text-lg font-semibold mb-2">ROI</h4>
-            <p className="text-sm opacity-90">Operational efficiency improvement</p>
-            <p className="text-2xl font-bold mt-2">340%</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Dashboard;
+</body>
+</html>
