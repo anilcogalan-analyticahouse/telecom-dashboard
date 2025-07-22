@@ -1,0 +1,217 @@
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Users, Database, TrendingUp, Wifi, MapPin, CreditCard } from 'lucide-react';
+
+const Dashboard = () => {
+  // Data quality metrics
+  const dataQualityMetrics = [
+    { category: 'Customer Demographics', completeness: 95, accuracy: 92 },
+    { category: 'Contract Information', completeness: 88, accuracy: 96 },
+    { category: 'Billing Data', completeness: 99, accuracy: 98 },
+    { category: 'Location Data', completeness: 85, accuracy: 89 }
+  ];
+
+  // Technology distribution
+  const technologyDistribution = [
+    { name: 'Fiber', value: 45, color: '#3B82F6' },
+    { name: 'VDSL', value: 30, color: '#10B981' },
+    { name: 'ADSL', value: 20, color: '#F59E0B' },
+    { name: 'GigaFiber', value: 5, color: '#8B5CF6' }
+  ];
+
+  // Monthly integration trend
+  const integrationTrend = [
+    { month: 'Jan', records: 120000, quality: 85 },
+    { month: 'Feb', records: 135000, quality: 88 },
+    { month: 'Mar', records: 150000, quality: 91 },
+    { month: 'Apr', records: 168000, quality: 93 },
+    { month: 'May', records: 185000, quality: 95 },
+    { month: 'Jun', records: 202000, quality: 96 }
+  ];
+
+  // City-based customer distribution
+  const cityDistribution = [
+    { city: 'Istanbul', customers: 85000, revenue: 12500000 },
+    { city: 'Ankara', customers: 45000, revenue: 6800000 },
+    { city: 'Izmir', customers: 38000, revenue: 5700000 },
+    { city: 'Bursa', customers: 22000, revenue: 3300000 },
+    { city: 'Antalya', customers: 18000, revenue: 2900000 }
+  ];
+
+  const StatCard = ({ icon: Icon, title, value, change, color }) => (
+    <div className="bg-white rounded-lg shadow-lg p-6 border-l-4" style={{borderLeftColor: color}}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className={`text-xs ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {change >= 0 ? '↗' : '↘'} {Math.abs(change)}% this month
+          </p>
+        </div>
+        <Icon className="h-8 w-8" style={{color}} />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">First-Party Data Integration</h1>
+          <p className="text-gray-600">Unified customer data view and analytics dashboard</p>
+        </div>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatCard
+            icon={Users}
+            title="Total Customers"
+            value="208,000"
+            change={12}
+            color="#3B82F6"
+          />
+          <StatCard
+            icon={Database}
+            title="Data Quality"
+            value="96%"
+            change={8}
+            color="#10B981"
+          />
+          <StatCard
+            icon={TrendingUp}
+            title="Monthly Growth"
+            value="15%"
+            change={3}
+            color="#F59E0B"
+          />
+          <StatCard
+            icon={CreditCard}
+            title="Total Revenue"
+            value="$4.2M"
+            change={18}
+            color="#8B5CF6"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Data Quality Metrics */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Database className="mr-2 text-blue-600" />
+              Data Quality Metrics
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={dataQualityMetrics}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" tick={{fontSize: 12}} />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="completeness" fill="#3B82F6" name="Completeness %" />
+                <Bar dataKey="accuracy" fill="#10B981" name="Accuracy %" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Technology Distribution */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Wifi className="mr-2 text-green-600" />
+              Infrastructure Technology Distribution
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={technologyDistribution}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  dataKey="value"
+                  label={({name, value}) => `${name}: ${value}%`}
+                >
+                  {technologyDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Integration Trend */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <TrendingUp className="mr-2 text-purple-600" />
+            Monthly Data Integration Trend
+          </h3>
+          <ResponsiveContainer width="100%" height={350}>
+            <LineChart data={integrationTrend}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis yAxisId="left" />
+              <YAxis yAxisId="right" orientation="right" />
+              <Tooltip 
+                formatter={(value, name) => [
+                  name === 'records' ? `${(value/1000).toFixed(0)}K` : `${value}%`,
+                  name === 'records' ? 'Total Records' : 'Data Quality'
+                ]}
+              />
+              <Legend />
+              <Bar yAxisId="left" dataKey="records" fill="#8884d8" name="Total Records" />
+              <Line yAxisId="right" type="monotone" dataKey="quality" stroke="#82ca9d" strokeWidth={3} name="Data Quality %" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* City-based Analysis */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <MapPin className="mr-2 text-red-600" />
+            Customer & Revenue Distribution by City
+          </h3>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={cityDistribution}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="city" />
+              <YAxis yAxisId="left" />
+              <YAxis yAxisId="right" orientation="right" />
+              <Tooltip 
+                formatter={(value, name) => [
+                  name === 'customers' ? `${(value/1000).toFixed(0)}K` : `$${(value/1000000).toFixed(1)}M`,
+                  name === 'customers' ? 'Customers' : 'Revenue'
+                ]}
+              />
+              <Legend />
+              <Bar yAxisId="left" dataKey="customers" fill="#FF6B6B" name="Customer Count" />
+              <Bar yAxisId="right" dataKey="revenue" fill="#4ECDC4" name="Monthly Revenue ($)" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Summary Information */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+            <h4 className="text-lg font-semibold mb-2">Data Integration</h4>
+            <p className="text-sm opacity-90">Successful integration from 15+ different data sources</p>
+            <p className="text-2xl font-bold mt-2">98.5% uptime</p>
+          </div>
+          
+          <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
+            <h4 className="text-lg font-semibold mb-2">Performance</h4>
+            <p className="text-sm opacity-90">Real-time data processing and synchronization</p>
+            <p className="text-2xl font-bold mt-2">&lt; 5 sec</p>
+          </div>
+          
+          <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
+            <h4 className="text-lg font-semibold mb-2">ROI</h4>
+            <p className="text-sm opacity-90">Operational efficiency improvement</p>
+            <p className="text-2xl font-bold mt-2">340%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
