@@ -3,70 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telecom Data Integration Dashboard</title>
+    <title>Telecom Digital Transformation Portfolio</title>
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
-            overflow-x: auto;
+            overflow-x: hidden;
         }
-        
-        .dashboard {
+
+        .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.98);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            padding: 20px;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
         }
-        
-        .header {
+
+        .nav-title {
             text-align: center;
-            margin-bottom: 40px;
-            color: #2c3e50;
+            margin-bottom: 20px;
         }
-        
-        .header h1 {
-            font-size: clamp(28px, 5vw, 42px);
-            margin-bottom: 10px;
+
+        .nav-title h1 {
+            font-size: clamp(24px, 4vw, 36px);
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 10px;
         }
-        
-        .header p {
-            font-size: clamp(14px, 2vw, 18px);
-            color: #7f8c8d;
+
+        .nav-title p {
+            color: #64748b;
+            font-size: 16px;
         }
-        
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #1e40af, #7c3aed);
+            transform: scale(1.05);
+        }
+
+        /* Project Sections */
+        .project-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .project-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .project-header h2 {
+            font-size: clamp(28px, 5vw, 42px);
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .project-header p {
+            color: #64748b;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* KPI Grid */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
-        
+
         .kpi-card {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             border-left: 5px solid;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-        
+
         .kpi-card::before {
             content: '';
             position: absolute;
@@ -77,278 +157,184 @@
             background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
             border-radius: 0 15px 0 50px;
         }
-        
-        .kpi-card:hover { 
+
+        .kpi-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
-        
-        .kpi-card.blue { border-left-color: #3498db; }
-        .kpi-card.green { border-left-color: #2ecc71; }
-        .kpi-card.orange { border-left-color: #f39c12; }
-        .kpi-card.purple { border-left-color: #9b59b6; }
-        
+
+        .kpi-card.blue { border-left-color: #3b82f6; }
+        .kpi-card.green { border-left-color: #10b981; }
+        .kpi-card.orange { border-left-color: #f59e0b; }
+        .kpi-card.purple { border-left-color: #8b5cf6; }
+        .kpi-card.red { border-left-color: #ef4444; }
+
         .kpi-icon {
             font-size: 32px;
             margin-bottom: 15px;
             display: inline-block;
         }
-        
+
         .kpi-value {
-            font-size: clamp(32px, 6vw, 52px);
+            font-size: clamp(32px, 6vw, 48px);
             font-weight: 700;
-            color: #2c3e50;
+            color: #1e293b;
             margin: 15px 0;
             letter-spacing: -1px;
         }
-        
+
         .kpi-label {
-            color: #7f8c8d;
+            color: #64748b;
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
         }
-        
+
         .kpi-change {
-            color: #27ae60;
+            color: #059669;
             font-size: 13px;
             font-weight: 600;
             margin-top: 8px;
         }
-        
-        .chart-grid {
+
+        /* Charts Grid */
+        .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
-        
+
         .chart-card {
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             min-height: 400px;
             transition: transform 0.3s ease;
         }
-        
+
         .chart-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .chart-title {
             font-size: 20px;
             font-weight: 700;
-            color: #2c3e50;
+            color: #1e293b;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
+            border-bottom: 2px solid #e2e8f0;
         }
-        
+
         .chart-title::before {
             content: "📊";
             margin-right: 12px;
             font-size: 24px;
         }
-        
-        /* Data Quality Chart */
-        .data-quality-chart {
+
+        /* Visual Charts (CSS-only) */
+        .bar-chart {
             display: flex;
-            justify-content: space-around;
             align-items: end;
-            height: 280px;
-            padding: 20px 10px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            height: 250px;
+            gap: 10px;
+            padding: 20px;
+            background: linear-gradient(45deg, #f8fafc, #e2e8f0);
             border-radius: 12px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+            border-radius: 4px 4px 0 0;
+            animation: growUp 2s ease-out;
+            box-shadow: 0 -4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
             position: relative;
         }
-        
-        .quality-bar {
-            width: 70px;
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            animation: growUp 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+
+        .bar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 -8px 20px rgba(59, 130, 246, 0.4);
         }
-        
-        .quality-bar:nth-child(1) {
-            background: linear-gradient(to top, #3498db, #5dade2);
-            height: 90%;
-        }
-        
-        .quality-bar:nth-child(2) {
-            background: linear-gradient(to top, #2ecc71, #58d68d);
-            height: 85%;
-        }
-        
-        .quality-bar:nth-child(3) {
-            background: linear-gradient(to top, #f39c12, #f7c52d);
-            height: 95%;
-        }
-        
-        .quality-bar:nth-child(4) {
-            background: linear-gradient(to top, #9b59b6, #bb8fce);
-            height: 80%;
-        }
-        
-        .quality-label {
-            position: absolute;
-            bottom: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: #34495e;
-            font-weight: 600;
-            text-align: center;
-            white-space: nowrap;
-        }
-        
-        .quality-percentage {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.95);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #2c3e50;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        
-        /* Technology Distribution */
-        .tech-distribution {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 300px;
-        }
-        
-        .pie-container {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .pie-slice {
+
+        .bar:nth-child(1) { height: 60%; }
+        .bar:nth-child(2) { height: 80%; }
+        .bar:nth-child(3) { height: 100%; }
+        .bar:nth-child(4) { height: 75%; }
+        .bar:nth-child(5) { height: 90%; }
+        .bar:nth-child(6) { height: 65%; }
+
+        .pie-chart {
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: conic-gradient(
-                #3498db 0% 45%,
-                #2ecc71 45% 75%,
-                #f39c12 75% 95%,
-                #9b59b6 95% 100%
-            );
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             animation: spin360 3s ease-in-out;
         }
-        
-        .pie-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: #2c3e50;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            font-size: 12px;
+
+        .pie-chart.data-integration {
+            background: conic-gradient(
+                #3b82f6 0% 45%,
+                #10b981 45% 75%,
+                #f59e0b 75% 95%,
+                #8b5cf6 95% 100%
+            );
         }
-        
+
+        .pie-chart.call-center {
+            background: conic-gradient(
+                #3b82f6 0% 60%,
+                #10b981 60% 85%,
+                #f59e0b 85% 100%
+            );
+        }
+
+        .pie-chart.churn-prevention {
+            background: conic-gradient(
+                #ef4444 0% 15%,
+                #f59e0b 15% 35%,
+                #10b981 35% 100%
+            );
+        }
+
         .pie-legend {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            width: 100%;
-            max-width: 300px;
+            max-width: 400px;
+            margin: 0 auto;
         }
-        
+
         .legend-item {
             display: flex;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            color: #34495e;
+            color: #374151;
         }
-        
+
         .legend-color {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            margin-right: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            margin-right: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        /* Trend Chart */
-        .trend-container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-        }
-        
-        .trend-chart {
-            height: 280px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            border-radius: 12px;
-            display: flex;
-            align-items: end;
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .trend-bar {
-            flex: 1;
-            margin: 0 4px;
-            border-radius: 6px 6px 0 0;
-            background: linear-gradient(to top, #3498db, #5dade2);
-            position: relative;
-            animation: growUp 2s ease-out;
-            box-shadow: 0 -5px 15px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .trend-bar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 -8px 25px rgba(52, 152, 219, 0.4);
-        }
-        
-        .trend-bar:nth-child(1) { height: 50%; animation-delay: 0.1s; }
-        .trend-bar:nth-child(2) { height: 65%; animation-delay: 0.2s; }
-        .trend-bar:nth-child(3) { height: 75%; animation-delay: 0.3s; }
-        .trend-bar:nth-child(4) { height: 85%; animation-delay: 0.4s; }
-        .trend-bar:nth-child(5) { height: 95%; animation-delay: 0.5s; }
-        .trend-bar:nth-child(6) { height: 100%; animation-delay: 0.6s; }
-        
-        .trend-labels {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #7f8c8d;
-        }
-        
+
         /* Summary Cards */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 25px;
+            margin-top: 40px;
         }
-        
+
         .summary-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -360,7 +346,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .summary-card::before {
             content: '';
             position: absolute;
@@ -371,198 +357,606 @@
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
             animation: shimmer 3s infinite;
         }
-        
+
         .summary-card:hover {
             transform: translateY(-8px);
         }
-        
+
         .summary-card h3 {
             font-size: 22px;
             margin-bottom: 15px;
             font-weight: 700;
         }
-        
+
         .summary-value {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 700;
             margin: 20px 0;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
-        
-        .summary-card p {
-            font-size: 15px;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-        
+
         /* Animations */
         @keyframes growUp {
-            from { 
-                height: 0 !important; 
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { height: 0 !important; opacity: 0; }
+            to { opacity: 1; }
         }
-        
+
         @keyframes spin360 {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        
+
         @keyframes shimmer {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        
-        /* Responsive */
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .dashboard { padding: 20px; }
-            .chart-grid { grid-template-columns: 1fr; }
-            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-            .summary-cards { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+            .nav-buttons { flex-direction: column; align-items: center; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
             .pie-legend { grid-template-columns: 1fr; }
         }
-        
-        @media (max-width: 480px) {
-            .dashboard { padding: 15px; }
-            .kpi-grid { grid-template-columns: 1fr; }
-            .chart-grid { grid-template-columns: 1fr; }
-        }
+
+        /* Special Styles for Different Projects */
+        .churn-alert { background: linear-gradient(135deg, #fef3c7, #fed7aa); }
+        .offer-engine { background: linear-gradient(135deg, #ddd6fe, #c7d2fe); }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <!-- Header -->
-        <div class="header">
-            <h1>🔗 First-Party Data Integration</h1>
-            <p>Unified customer data visualization and real-time analytics dashboard</p>
-        </div>
-        
-        <!-- KPI Cards -->
-        <div class="kpi-grid">
-            <div class="kpi-card blue">
-                <div class="kpi-icon">👥</div>
-                <div class="kpi-label">Total Customers</div>
-                <div class="kpi-value">~200K</div>
-                <div class="kpi-change">↗ Growing trend</div>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <div class="nav-title">
+                <h1>🚀 Telecom Digital Transformation Portfolio</h1>
+                <p>Comprehensive analytics and optimization solutions</p>
             </div>
-            <div class="kpi-card green">
-                <div class="kpi-icon">✅</div>
-                <div class="kpi-label">Data Quality</div>
-                <div class="kpi-value">High</div>
-                <div class="kpi-change">↗ Improving</div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showProject('overview')">Portfolio Overview</button>
+                <button class="nav-btn" onclick="showProject('data-integration')">🔗 Data Integration</button>
+                <button class="nav-btn" onclick="showProject('call-center')">📞 Call Center</button>
+                <button class="nav-btn" onclick="showProject('churn-prevention')">🛡️ Churn Prevention</button>
+                <button class="nav-btn" onclick="showProject('offer-engine')">🎯 Offer Engine</button>
             </div>
-            <div class="kpi-card orange">
-                <div class="kpi-icon">📈</div>
-                <div class="kpi-label">Growth Rate</div>
-                <div class="kpi-value">Strong</div>
-                <div class="kpi-change">↗ Positive trend</div>
+        </nav>
+
+        <!-- Portfolio Overview -->
+        <section id="overview" class="project-section active">
+            <div class="project-header">
+                <h2>📊 Portfolio Overview</h2>
+                <p>Comprehensive digital transformation initiatives to drive customer experience and operational excellence</p>
             </div>
-            <div class="kpi-card purple">
-                <div class="kpi-icon">💰</div>
-                <div class="kpi-label">Revenue Impact</div>
-                <div class="kpi-value">$4M+</div>
-                <div class="kpi-change">↗ Increasing</div>
-            </div>
-        </div>
-        
-        <!-- Charts -->
-        <div class="chart-grid">
-            <!-- Data Quality -->
-            <div class="chart-card">
-                <div class="chart-title">Data Quality Metrics</div>
-                <div class="data-quality-chart">
-                    <div class="quality-bar">
-                        <div class="quality-percentage">High</div>
-                        <div class="quality-label">Demographics<br>Data</div>
-                    </div>
-                    <div class="quality-bar">
-                        <div class="quality-percentage">Good</div>
-                        <div class="quality-label">Contract<br>Information</div>
-                    </div>
-                    <div class="quality-bar">
-                        <div class="quality-percentage">Excellent</div>
-                        <div class="quality-label">Billing<br>Data</div>
-                    </div>
-                    <div class="quality-bar">
-                        <div class="quality-percentage">Good</div>
-                        <div class="quality-label">Location<br>Information</div>
-                    </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card blue">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-label">Active Projects</div>
+                    <div class="kpi-value">4</div>
+                    <div class="kpi-change">Strategic initiatives</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-icon">👥</div>
+                    <div class="kpi-label">Customer Base</div>
+                    <div class="kpi-value">~200K</div>
+                    <div class="kpi-change">Growing portfolio</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-label">Revenue Impact</div>
+                    <div class="kpi-value">$5M+</div>
+                    <div class="kpi-change">Annual potential</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-icon">⚡</div>
+                    <div class="kpi-label">ROI Expected</div>
+                    <div class="kpi-value">High</div>
+                    <div class="kpi-change">Multi-year impact</div>
                 </div>
             </div>
-            
-            <!-- Technology Distribution -->
-            <div class="chart-card">
-                <div class="chart-title">Infrastructure Technology Distribution</div>
-                <div class="tech-distribution">
-                    <div class="pie-container">
-                        <div class="pie-slice">
-                            <div class="pie-center">Mixed<br>Portfolio</div>
-                        </div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🔗 Data Integration</h3>
+                    <div class="summary-value">Unified</div>
+                    <p>360° customer view from multiple data sources</p>
+                </div>
+                <div class="summary-card">
+                    <h3>📞 Call Center</h3>
+                    <div class="summary-value">Optimized</div>
+                    <p>Enhanced customer experience and agent efficiency</p>
+                </div>
+                <div class="summary-card">
+                    <h3>🛡️ Churn Prevention</h3>
+                    <div class="summary-value">Proactive</div>
+                    <p>AI-powered early warning and retention system</p>
+                </div>
+                <div class="summary-card">
+                    <h3>🎯 Offer Engine</h3>
+                    <div class="summary-value">Dynamic</div>
+                    <p>Personalized real-time offer generation</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Integration Project -->
+        <section id="data-integration" class="project-section">
+            <div class="project-header">
+                <h2>🔗 First-Party Data Integration</h2>
+                <p>Unified customer data platform for comprehensive 360° view and analytics</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card blue">
+                    <div class="kpi-icon">👥</div>
+                    <div class="kpi-label">Total Customers</div>
+                    <div class="kpi-value">~200K</div>
+                    <div class="kpi-change">↗ Growing base</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-label">Data Quality</div>
+                    <div class="kpi-value">High</div>
+                    <div class="kpi-change">↗ Improving</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-icon">📈</div>
+                    <div class="kpi-label">Integration Rate</div>
+                    <div class="kpi-value">Strong</div>
+                    <div class="kpi-change">↗ 15+ sources</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-label">Revenue Visibility</div>
+                    <div class="kpi-value">$4M+</div>
+                    <div class="kpi-change">↗ Full tracking</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Data Quality Metrics</div>
+                    <div class="bar-chart">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
                     </div>
+                    <div style="text-align: center; margin-top: 15px; color: #64748b; font-size: 14px;">
+                        Demographics | Contracts | Billing | Location | Services | Performance
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Technology Distribution</div>
+                    <div class="pie-chart data-integration"></div>
                     <div class="pie-legend">
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #3498db;"></div>
-                            Fiber (Majority)
+                            <div class="legend-color" style="background: #3b82f6;"></div>
+                            Fiber (45%)
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #2ecc71;"></div>
-                            VDSL (Significant)
+                            <div class="legend-color" style="background: #10b981;"></div>
+                            VDSL (30%)
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #f39c12;"></div>
-                            ADSL (Legacy)
+                            <div class="legend-color" style="background: #f59e0b;"></div>
+                            ADSL (20%)
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #9b59b6;"></div>
-                            GigaFiber (Premium)
+                            <div class="legend-color" style="background: #8b5cf6;"></div>
+                            GigaFiber (5%)
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Trend Chart -->
-        <div class="trend-container">
-            <div class="chart-title">6-Month Integration Growth Trend</div>
-            <div class="trend-chart">
-                <div class="trend-bar"></div>
-                <div class="trend-bar"></div>
-                <div class="trend-bar"></div>
-                <div class="trend-bar"></div>
-                <div class="trend-bar"></div>
-                <div class="trend-bar"></div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🔄 Integration</h3>
+                    <div class="summary-value">Excellent</div>
+                    <p>Multiple data sources unified successfully</p>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Performance</h3>
+                    <div class="summary-value">Fast</div>
+                    <p>Real-time processing and synchronization</p>
+                </div>
+                <div class="summary-card">
+                    <h3>💎 Business Value</h3>
+                    <div class="summary-value">High</div>
+                    <p>Significant operational improvements</p>
+                </div>
             </div>
-            <div class="trend-labels">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
+        </section>
+
+        <!-- Call Center Project -->
+        <section id="call-center" class="project-section">
+            <div class="project-header">
+                <h2>📞 Call Center Optimization</h2>
+                <p>Enhanced customer service delivery through analytics and performance optimization</p>
             </div>
-        </div>
-        
-        <!-- Summary Cards -->
-        <div class="summary-cards">
-            <div class="summary-card">
-                <h3>🔄 Data Integration</h3>
-                <div class="summary-value">Excellent</div>
-                <p>Successfully integrated data from multiple sources</p>
+
+            <div class="kpi-grid">
+                <div class="kpi-card blue">
+                    <div class="kpi-icon">📞</div>
+                    <div class="kpi-label">Daily Calls</div>
+                    <div class="kpi-value">~1.8K</div>
+                    <div class="kpi-change">↗ Volume managed</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-icon">⏱️</div>
+                    <div class="kpi-label">Avg Wait Time</div>
+                    <div class="kpi-value">Fast</div>
+                    <div class="kpi-change">↗ Optimized</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-icon">😊</div>
+                    <div class="kpi-label">Satisfaction</div>
+                    <div class="kpi-value">High</div>
+                    <div class="kpi-change">↗ 4.6/5.0</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-label">Resolution Rate</div>
+                    <div class="kpi-value">~90%</div>
+                    <div class="kpi-change">↗ Effective</div>
+                </div>
             </div>
-            <div class="summary-card">
-                <h3>⚡ System Performance</h3>
-                <div class="summary-value">Fast</div>
-                <p>Real-time data processing and synchronization</p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Hourly Call Distribution</div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 30%;"></div>
+                        <div class="bar" style="height: 60%;"></div>
+                        <div class="bar" style="height: 85%;"></div>
+                        <div class="bar" style="height: 100%;"></div>
+                        <div class="bar" style="height: 90%;"></div>
+                        <div class="bar" style="height: 45%;"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px; color: #64748b; font-size: 14px;">
+                        8AM | 10AM | 12PM | 2PM | 4PM | 6PM
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Communication Channels</div>
+                    <div class="pie-chart call-center"></div>
+                    <div class="pie-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3b82f6;"></div>
+                            Voice (60%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #10b981;"></div>
+                            WhatsApp (25%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f59e0b;"></div>
+                            Live Chat (15%)
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="summary-card">
-                <h3>💎 Business Value</h3>
-                <div class="summary-value">High</div>
-                <p>Significant operational efficiency improvements</p>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🎯 Service Quality</h3>
+                    <div class="summary-value">Excellent</div>
+                    <p>High customer satisfaction and resolution rates</p>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Response Time</h3>
+                    <div class="summary-value">Fast</div>
+                    <p>Optimized wait and handling times</p>
+                </div>
+                <div class="summary-card">
+                    <h3>🚀 Efficiency</h3>
+                    <div class="summary-value">High</div>
+                    <p>Enhanced agent productivity metrics</p>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Churn Prevention Project -->
+        <section id="churn-prevention" class="project-section">
+            <div class="project-header">
+                <h2>🛡️ Proactive Churn Prevention</h2>
+                <p>AI-powered customer retention system with predictive analytics and intervention strategies</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card red">
+                    <div class="kpi-icon">⚠️</div>
+                    <div class="kpi-label">At-Risk Customers</div>
+                    <div class="kpi-value">~500</div>
+                    <div class="kpi-change">↘ Decreasing</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-label">Prediction Accuracy</div>
+                    <div class="kpi-value">High</div>
+                    <div class="kpi-change">↗ ML-powered</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-icon">🛡️</div>
+                    <div class="kpi-label">Retention Rate</div>
+                    <div class="kpi-value">Strong</div>
+                    <div class="kpi-change">↗ Improving</div>
+                </div>
+                <div class="kpi-card blue">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-label">Revenue Saved</div>
+                    <div class="kpi-value">$1M+</div>
+                    <div class="kpi-change">↗ Protected</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card churn-alert">
+                    <div class="chart-title">Risk Score Distribution</div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 90%; background: linear-gradient(to top, #10b981, #34d399);"></div>
+                        <div class="bar" style="height: 70%; background: linear-gradient(to top, #f59e0b, #fbbf24);"></div>
+                        <div class="bar" style="height: 30%; background: linear-gradient(to top, #ef4444, #f87171);"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px; color: #64748b; font-size: 14px;">
+                        Low Risk | Medium Risk | High Risk
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Churn Factors</div>
+                    <div class="pie-chart churn-prevention"></div>
+                    <div class="pie-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ef4444;"></div>
+                            Service Issues (15%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f59e0b;"></div>
+                            Pricing (20%)
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #10b981;"></div>
+                            Satisfied (65%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🤖 AI Prediction</h3>
+                    <div class="summary-value">Smart</div>
+                    <p>Machine learning algorithms for early detection</p>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Early Warning</h3>
+                    <div class="summary-value">Real-time</div>
+                    <p>Instant alerts for at-risk customers</p>
+                </div>
+                <div class="summary-card">
+                    <h3>🎯 Intervention</h3>
+                    <div class="summary-value">Effective</div>
+                    <p>Targeted retention campaigns and offers</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Offer Engine Project -->
+        <section id="offer-engine" class="project-section">
+            <div class="project-header">
+                <h2>🎯 Dynamic Offer Engine</h2>
+                <p>Personalized real-time offer generation system powered by customer analytics and AI</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card blue">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-label">Daily Offers</div>
+                    <div class="kpi-value">~2.5K</div>
+                    <div class="kpi-change">↗ Personalized</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-label">Acceptance Rate</div>
+                    <div class="kpi-value">High</div>
+                    <div class="kpi-change">↗ 35%+ improvement</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-icon">⚡</div>
+                    <div class="kpi-label">Response Time</div>
+                    <div class="kpi-value">Real-time</div>
+                    <div class="kpi-change">↗ <100ms</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-label">Revenue Uplift</div>
+                    <div class="kpi-value">$800K+</div>
+                    <div class="kpi-change">↗ Incremental</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card offer-engine">
+                    <div class="chart-title">Offer Performance by Type</div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 85%; background: linear-gradient(to top, #8b5cf6, #a78bfa);"></div>
+                        <div class="bar" style="height: 70%; background: linear-gradient(to top, #3b82f6, #60a5fa);"></div>
+                        <div class="bar" style="height: 95%; background: linear-gradient(to top, #10b981, #34d399);"></div>
+                        <div class="bar" style="height: 60%; background: linear-gradient(to top, #f59e0b, #fbbf24);"></div>
+                        <div class="bar" style="height: 40%; background: linear-gradient(to top, #ef4444, #f87171);"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px; color: #64748b; font-size: 12px;">
+                        Upgrade | Bundle | Retention | Cross-sell | Discount
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Customer Segments</div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
+                        <div style="text-align: center;">
+                            <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#3b82f6 0% 40%, #10b981 40% 70%, #f59e0b 70% 90%, #8b5cf6 90% 100%); margin: 0 auto 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); animation: spin360 3s ease-in-out;"></div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #3b82f6;"></div>
+                                Premium (40%)
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #10b981;"></div>
+                                Standard (30%)
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>
+                                Basic (20%)
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #8b5cf6;"></div>
+                                Enterprise (10%)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🤖 AI Engine</h3>
+                    <div class="summary-value">Smart</div>
+                    <p>Machine learning for optimal offer matching</p>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Real-time</h3>
+                    <div class="summary-value">Instant</div>
+                    <p>Sub-second offer generation and delivery</p>
+                </div>
+                <div class="summary-card">
+                    <h3>📈 Performance</h3>
+                    <div class="summary-value">Excellent</div>
+                    <p>High conversion rates and customer satisfaction</p>
+                </div>
+            </div>
+        </section>
     </div>
+
+    <script>
+        function showProject(projectId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.project-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(projectId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            // Restart animations
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                bar.style.animation = 'none';
+                bar.offsetHeight; // Trigger reflow
+                bar.style.animation = 'growUp 2s ease-out';
+            });
+
+            const pieCharts = document.querySelectorAll('.pie-chart');
+            pieCharts.forEach(chart => {
+                chart.style.animation = 'none';
+                chart.offsetHeight; // Trigger reflow
+                chart.style.animation = 'spin360 3s ease-in-out';
+            });
+        }
+
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add stagger animation to KPI cards
+            const kpiCards = document.querySelectorAll('.kpi-card');
+            kpiCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeIn 0.6s ease-out forwards';
+            });
+
+            // Add hover effects to navigation buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px) scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+
+            // Smooth transitions for project cards
+            const projectSections = document.querySelectorAll('.project-section');
+            projectSections.forEach(section => {
+                section.style.transition = 'all 0.5s ease-in-out';
+            });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const buttons = document.querySelectorAll('.nav-btn');
+            const activeButton = document.querySelector('.nav-btn.active');
+            const currentIndex = Array.from(buttons).indexOf(activeButton);
+            
+            if (e.key === 'ArrowRight' && currentIndex < buttons.length - 1) {
+                buttons[currentIndex + 1].click();
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                buttons[currentIndex - 1].click();
+            }
+        });
+
+        // Add progress indicator
+        function addProgressIndicator() {
+            const nav = document.querySelector('.nav-bar');
+            const progressDiv = document.createElement('div');
+            progressDiv.style.cssText = `
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #667eea, #764ba2);
+                transition: all 0.3s ease;
+                border-radius: 0 0 15px 15px;
+            `;
+            nav.appendChild(progressDiv);
+            
+            // Update progress based on active project
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    const progress = ((index) / (buttons.length - 1)) * 100;
+                    progressDiv.style.width = progress + '%';
+                });
+            });
+        }
+
+        // Initialize progress indicator
+        document.addEventListener('DOMContentLoaded', addProgressIndicator);
+    </script>
 </body>
 </html>
