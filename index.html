@@ -391,7 +391,192 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Responsive Design */
+        /* Data Schema Styles */
+        .data-schema-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .schema-table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .schema-table-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .schema-table-title.integration::before {
+            content: "🔗";
+            margin-right: 15px;
+            font-size: 28px;
+        }
+
+        .schema-table-title.call-center::before {
+            content: "📞";
+            margin-right: 15px;
+            font-size: 28px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .data-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            transition: background-color 0.2s ease;
+        }
+
+        .data-table tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .data-table tr:nth-child(even) td {
+            background-color: #f9fafb;
+        }
+
+        .data-table tr:nth-child(even):hover td {
+            background-color: #f1f5f9;
+        }
+
+        .field-name {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #1e40af;
+            background: #eff6ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .field-type {
+            font-family: 'Courier New', monospace;
+            color: #059669;
+            font-size: 12px;
+            background: #ecfdf5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+
+        .field-description {
+            color: #374151;
+            line-height: 1.4;
+        }
+
+        .critical-field {
+            position: relative;
+        }
+
+        .critical-field::before {
+            content: "🔑";
+            position: absolute;
+            left: -20px;
+            top: 12px;
+            font-size: 12px;
+        }
+
+        .encrypted-field {
+            position: relative;
+        }
+
+        .encrypted-field::before {
+            content: "🔒";
+            position: absolute;
+            left: -20px;
+            top: 12px;
+            font-size: 12px;
+        }
+
+        .schema-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+
+        .stat-card.blue { border-left-color: #3b82f6; }
+        .stat-card.green { border-left-color: #10b981; }
+        .stat-card.orange { border-left-color: #f59e0b; }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive adjustments for tables */
+        @media (max-width: 768px) {
+            .data-table {
+                font-size: 12px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+            }
+            
+            .field-name {
+                font-size: 11px;
+            }
+            
+            .field-type {
+                display: block;
+                margin: 4px 0 0 0;
+            }
+        }
         @media (max-width: 768px) {
             .container { padding: 15px; }
             .nav-buttons { flex-direction: column; align-items: center; }
@@ -419,6 +604,7 @@
                 <button class="nav-btn" onclick="showProject('call-center')">📞 Call Center</button>
                 <button class="nav-btn" onclick="showProject('churn-prevention')">🛡️ Churn Prevention</button>
                 <button class="nav-btn" onclick="showProject('offer-engine')">🎯 Offer Engine</button>
+                <button class="nav-btn" onclick="showProject('raw-data')">📋 Data Schema</button>
             </div>
         </nav>
 
@@ -840,6 +1026,349 @@
                     <h3>📈 Performance</h3>
                     <div class="summary-value">Excellent</div>
                     <p>High conversion rates and customer satisfaction</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Raw Data Schema Section -->
+        <section id="raw-data" class="project-section">
+            <div class="project-header">
+                <h2>📋 Data Schema & Architecture</h2>
+                <p>Comprehensive data model specifications for all integration points and analytical requirements</p>
+            </div>
+
+            <div class="data-schema-container">
+                <!-- Data Integration Schema -->
+                <div class="schema-table-container">
+                    <h3 class="schema-table-title integration">First-Party Data Integration Schema</h3>
+                    <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">
+                        Core customer data model for unified 360° view and analytics processing
+                    </p>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Field Name</th>
+                                <th>Description</th>
+                                <th>Type/Format</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="critical-field">
+                                <td><span class="field-name">user_id</span></td>
+                                <td class="field-description">Customer / User unique identifier</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">user_birthdate</span></td>
+                                <td class="field-description">Customer / User birth date</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">user_occupancy</span></td>
+                                <td class="field-description">Customer / User profession</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr class="encrypted-field">
+                                <td><span class="field-name">phone_SHA256</span></td>
+                                <td class="field-description">Phone number (encrypted)</td>
+                                <td><span class="field-type">CHAR(64)</span></td>
+                            </tr>
+                            <tr class="encrypted-field">
+                                <td><span class="field-name">email_SHA256</span></td>
+                                <td class="field-description">Email address (encrypted)</td>
+                                <td><span class="field-type">CHAR(64)</span></td>
+                            </tr>
+                            <tr class="encrypted-field">
+                                <td><span class="field-name">contract_number_SHA256</span></td>
+                                <td class="field-description">Subscriber contract/code number (encrypted)</td>
+                                <td><span class="field-type">CHAR(64)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">item_name</span></td>
+                                <td class="field-description">Sold package/service code</td>
+                                <td><span class="field-type">VARCHAR(200)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">technology_type</span></td>
+                                <td class="field-description">Infrastructure type: Fiber, VDSL, ADSL, GigaFiber</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">provided_speed</span></td>
+                                <td class="field-description">Contracted download speed (Mbps)</td>
+                                <td><span class="field-type">INTEGER</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">contract_start_date</span></td>
+                                <td class="field-description">Service start date</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">contract_end_date</span></td>
+                                <td class="field-description">Commitment/subscription end date</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">invoice_number</span></td>
+                                <td class="field-description">Last invoice number</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">invoice_issue_date</span></td>
+                                <td class="field-description">Invoice issue date</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">invoice_amount_try</span></td>
+                                <td class="field-description">Invoice amount (VAT included)</td>
+                                <td><span class="field-type">DECIMAL(10,2)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">payment_status</span></td>
+                                <td class="field-description">paid, unpaid, partial</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">payment_date</span></td>
+                                <td class="field-description">Payment date (if paid)</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">churn_flag</span></td>
+                                <td class="field-description">1 if customer has churned</td>
+                                <td><span class="field-type">BOOLEAN</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">churn_date</span></td>
+                                <td class="field-description">Churn date (if applicable)</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">sales_channel</span></td>
+                                <td class="field-description">Sales channel: web, call_center, field</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">address_city</span></td>
+                                <td class="field-description">City</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">address_district</span></td>
+                                <td class="field-description">District</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">address_neighborhood</span></td>
+                                <td class="field-description">Neighborhood</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">address_street</span></td>
+                                <td class="field-description">Street</td>
+                                <td><span class="field-type">VARCHAR(200)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">address_bbk</span></td>
+                                <td class="field-description">Building/Connection code</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">last_update_ts</span></td>
+                                <td class="field-description">Record last update timestamp</td>
+                                <td><span class="field-type">TIMESTAMP</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">stage_name</span></td>
+                                <td class="field-description">Sales journey stage: lead, signup, payment, active, churn_risk, churned</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">stage_timestamp</span></td>
+                                <td class="field-description">Stage transition timestamp</td>
+                                <td><span class="field-type">TIMESTAMP</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="schema-stats">
+                        <div class="stat-card blue">
+                            <div class="stat-value">26</div>
+                            <div class="stat-label">Total Fields</div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Encrypted Fields</div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-value">15+</div>
+                            <div class="stat-label">Data Sources</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call Center Schema -->
+                <div class="schema-table-container">
+                    <h3 class="schema-table-title call-center">Call Center Optimization Schema</h3>
+                    <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">
+                        Complete call center interaction data model for performance analytics and customer experience optimization
+                    </p>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Field Name</th>
+                                <th>Description</th>
+                                <th>Type/Format</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="critical-field">
+                                <td><span class="field-name">call_id</span></td>
+                                <td class="field-description">Unique ID for each call</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr class="critical-field">
+                                <td><span class="field-name">user_id</span></td>
+                                <td class="field-description">Customer ID in CRM</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">sales_key_id</span></td>
+                                <td class="field-description">Contract number and sales key ID mapping data</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">user_occupancy</span></td>
+                                <td class="field-description">Customer / User profession</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr class="encrypted-field">
+                                <td><span class="field-name">phone_SHA256</span></td>
+                                <td class="field-description">Phone number (encrypted)</td>
+                                <td><span class="field-type">CHAR(64)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">email</span></td>
+                                <td class="field-description">Email address</td>
+                                <td><span class="field-type">VARCHAR(255)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">contract_number</span></td>
+                                <td class="field-description">Subscriber contract/code number</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_timestamp</span></td>
+                                <td class="field-description">Call start timestamp</td>
+                                <td><span class="field-type">TIMESTAMP</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_type</span></td>
+                                <td class="field-description">inbound, outbound</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_channel</span></td>
+                                <td class="field-description">voice, whatsapp, chat</td>
+                                <td><span class="field-type">ENUM</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_reason</span></td>
+                                <td class="field-description">"Package upgrade", "Fault report", etc.</td>
+                                <td><span class="field-type">VARCHAR(200)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_result</span></td>
+                                <td class="field-description">"Resolved", "Pending", "Cancelled"</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">call_duration_sec</span></td>
+                                <td class="field-description">Conversation duration (seconds)</td>
+                                <td><span class="field-type">INTEGER</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">agent_id</span></td>
+                                <td class="field-description">Agent who handled the call</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">agent_skill_group</span></td>
+                                <td class="field-description">E.g. "Retention", "Tech Support"</td>
+                                <td><span class="field-type">VARCHAR(100)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">sentiment_score</span></td>
+                                <td class="field-description">−1 (dissatisfied) ↔ +1 (satisfied)</td>
+                                <td><span class="field-type">DECIMAL(3,2)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">transcript_text</span></td>
+                                <td class="field-description">Call transcript if available</td>
+                                <td><span class="field-type">TEXT</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">follow_up_required</span></td>
+                                <td class="field-description">Follow-up call/ticket opened?</td>
+                                <td><span class="field-type">BOOLEAN</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">follow_up_due_date</span></td>
+                                <td class="field-description">Follow-up deadline date</td>
+                                <td><span class="field-type">DATE</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">ticket_id</span></td>
+                                <td class="field-description">CRM/Helpdesk request number</td>
+                                <td><span class="field-type">VARCHAR(50)</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">satisfaction_score</span></td>
+                                <td class="field-description">Post-call survey rating</td>
+                                <td><span class="field-type">INTEGER</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="field-name">queue_wait_time_sec</span></td>
+                                <td class="field-description">Queue waiting time (seconds)</td>
+                                <td><span class="field-type">INTEGER</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="schema-stats">
+                        <div class="stat-card blue">
+                            <div class="stat-value">21</div>
+                            <div class="stat-label">Total Fields</div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-value">1</div>
+                            <div class="stat-label">Encrypted Fields</div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-value">5+</div>
+                            <div class="stat-label">Integration Points</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>🔒 Data Security</h3>
+                    <div class="summary-value">GDPR</div>
+                    <p>Full compliance with data protection regulations and encryption standards</p>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Performance</h3>
+                    <div class="summary-value">Scalable</div>
+                    <p>Optimized for high-volume data processing and real-time analytics</p>
+                </div>
+                <div class="summary-card">
+                    <h3>🔄 Integration</h3>
+                    <div class="summary-value">API-First</div>
+                    <p>RESTful APIs and microservices architecture for seamless connectivity</p>
                 </div>
             </div>
         </section>
